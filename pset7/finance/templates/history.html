@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+        <fsieldset>
+            <div class="form-group">
+                <table class =table>
+                <tr>
+                    <th>T-no</th>
+                    <th>user-id</th>
+                    <th>company</th>
+                    <th>unit-price</th></th>
+                    <th>shares</th>
+                    <th>type</th>
+                    <th>date</th>
+                    </tr>    
+                <tr>
+                {% for row in transactions %}
+                    <tr>
+                        <td>{{row.tid}}</td>
+                        <td>{{row.id}}</td>
+                        <td>{{row.symbol}}</td>
+                        <td>{{row.unitprice}}</td>
+                        <td>{{row.shares}}</td>
+                        {%if row.type == 1 %}
+                            <td style="color:darkgreen">buy</td>
+                        {%else%}
+                            <td style="color:darkred">sale</td>
+                        {%endif%}
+                        <td>{{row.pdate}}</td>
+                    </tr>    
+                {%endfor%}
+            </table>
+            </div>
+        </fieldset>
+{% endblock %}

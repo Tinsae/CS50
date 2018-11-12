@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import os
+import sys
+
+import helpers
+from analyzer import Analyzer
+from termcolor import colored
+    
+def main():
+    # user name needs to be supplied
+    if len(sys.argv) != 2:
+        sys.exit("Usage: ./tweets @username")
+        
+    # absolute paths to lists
+    positives = os.path.join(sys.path[0], "positive-words.txt")
+    negatives = os.path.join(sys.path[0], "negative-words.txt")
+
+    # create object by passing the above arguments
+    analyzer = Analyzer(positives, negatives)
+    
+    # get screen name from the command line argument
+    screen_name = sys.argv[1]
+    
+    # helpers.py has a function that retrives persons tweets
+    # it takes the screen name without @ symbol
+    # and how many recent tweets is needed
+    # the default is 200
+    tweets = helpers.get_user_timeline(screen_name, 50)
+    
+    # if the name is wrong
+    if tweets == None:
+        sys.exit("Permission denied; or user doesn't exist in twitter")
+    
+    for tweet in tweets:
+        score = analyzer.analyze(tweet)
+        if score > 0.0:
+            # "{}".format is the new way of formatting in python
+            # "%s"%() was the old style
+            print(colored("{1} \"{0}\"".format(tweet, score), "green"))
+        elif score < 0.0:
+            print(colored("{1} \"{0}\"".format(tweet, score), "red"))
+        else:
+            print(colored("{1} \"{0}\"".format(tweet, score), "yellow"))
+
+if __name__ == "__main__":
+    main()

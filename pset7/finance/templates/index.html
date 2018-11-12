@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+<p style="font-weight:bold; background-color:lightblue">Logged in as: {{username}}
+</p>
+{%set gd =[0]%}
+        <fsieldset>
+            <div class="form-group">
+            <table class=table>
+            {%if transactions|length > 0%}
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+                {% for row in transactions %}
+                <tr>
+                    <td>{{row.symbol}}</td>
+                    <td>{{row.name}}</td>
+                    <td>{{row.shares}}</td>
+                    <td>${{row.unitprice}}</td>
+                    <td>${{row.total}}</td>
+                </tr> 
+                <! due to scope issues in jinja; I used the following way 
+                inorder to calculate the grand total 
+                --!>
+                {% if gd.append(gd.pop() + row.total) %} {%endif%}
+                {%endfor%}
+                {%else%}
+                <p>You don't have shares</p>
+                {%endif%}
+                <tr>
+                    <th>CASH</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>${{'%0.2f'% cash}}</td>
+                </tr>
+                <tr>
+                    <th>GRAND TOTAL</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    {%set gd = gd[0] + cash%}
+                    <td>${{'%0.2f'%gd}}</td>
+                </tr>
+            </table>
+            </div>
+        </fieldset>
+{% endblock %}

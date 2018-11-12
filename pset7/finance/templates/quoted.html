@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form action="{{ url_for('quoted') }}" method="post">
+        <fieldset>
+            <div class="form-group">
+            
+            <table class =table>
+            <tr>
+                <th>Name</th>
+                <td>{{stock.name}}</td>
+                
+            </tr>    
+            <tr>
+                <th>Price</th>
+                <td>{{stock.price}}</td>
+            </tr>
+            <tr>
+                <th>Symbol</th>
+                <td>{{stock.symbol}}</td>
+            </tr>
+            </table>
+            </div>
+ 
+        </fieldset>
+    </form>
+{% endblock %}
